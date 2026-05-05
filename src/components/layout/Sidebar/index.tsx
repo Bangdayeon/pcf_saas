@@ -7,7 +7,8 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
-import { Button } from '../ui/Button';
+import { Button } from '../../ui/Button';
+import MenuButton from './MenuButton';
 import { useSidebarStore } from './sidebarStore';
 
 export default function Sidebar() {
@@ -28,6 +29,12 @@ export default function Sidebar() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [setOpen]);
+
+  // 페이지 이동 후 닫음
+  const handleNavigate = (path: string) => {
+    router.push(path);
+    setOpen(false);
+  };
 
   return (
     <>
@@ -51,32 +58,14 @@ export default function Sidebar() {
         ref={navRef}
         animate={{ width: isOpen ? 240 : 80 }}
         transition={{ type: 'spring', stiffness: 200, damping: 24 }}
-        className="bg-gray50 fixed top-0 left-0 z-50 flex h-screen flex-col gap-3 overflow-hidden p-5 shadow-md"
+        className={`bg-green100 fixed top-0 left-0 z-50 flex h-screen flex-col gap-3 overflow-hidden p-5 shadow-md ${isOpen ? '' : 'items-center'}`}
       >
         {/* 토글 버튼 */}
-        <Button onClick={toggle} variant="ghost" size="icon-lg" className="p-1">
+        <Button onClick={toggle} variant="ghost" size="icon-lg" className="hover:bg-green200 p-1">
           <Image src={Logo} alt="사이드바 버튼" width={40} height={40} />
         </Button>
-        <Button
-          variant="ghost"
-          size="lg"
-          className="justify-start"
-          onClick={() => router.push('/home')}
-        >
-          <SVGIcon
-            icon="IC_Home"
-            size="lg"
-            className={pathName === '/home' ? 'text-green500' : ''}
-          />
-          <p
-            className={cn(
-              isOpen ? 'flex' : 'hidden',
-              pathName === '/home' ? 'text-green500 font-semibold' : ''
-            )}
-          >
-            대시보드
-          </p>
-        </Button>
+        <MenuButton href="/home" label="대시보드" icon="IC_Home" isOpen={isOpen} />
+        <MenuButton href="/add" label="데이터 추가" icon="IC_Add" isOpen={isOpen} />
       </motion.nav>
     </>
   );

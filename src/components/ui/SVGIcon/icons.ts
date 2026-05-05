@@ -1,6 +1,8 @@
-import IC_Home from '@/assets/icons/home.svg';
+import IC_Add from '@/assets/icons/ic_add.svg';
+import IC_Home from '@/assets/icons/ic_home.svg';
 
 export const IconMap = {
+  IC_Add,
   IC_Home,
 } as const;
 
