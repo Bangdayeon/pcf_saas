@@ -1,0 +1,154 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 활동 유형
+enum ActivityCategory {
+  ELECTRICITY // 전기
+  MATERIAL    // 원소재
+  TRANSPORT   // 운송
+}
+
+enum GhgScope {
+  SCOPE_1 // 직접 배출
+  SCOPE_2 // 간접 배출
+  SCOPE_3 // 기타 간접 배출
+}
+
+// ─────────────────────────────────────────────
+// 기업
+// ─────────────────────────────────────────────
+model Company {
+  id         String         @id @default(cuid())
+  name       String
+  country    String?
+
+  activities ActivityData[]
+  batches    UploadBatch[]
+
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+}
+
+// ─────────────────────────────────────────────
+// 카테고리별 허용 단위
+// ─────────────────────────────────────────────
+model ActivityUnit {
+  id        String           @id @default(cuid())
+
+  category  ActivityCategory
+  unit      String           // "kWh", "kg", "g", "ton", "ton-km"
+  isDefault Boolean          @default(false)
+  sortOrder Int              @default(0)
+
+  activityData ActivityData[]
+
+  @@unique([category, unit])
+  @@index([category])
+}
+
+// ─────────────────────────────────────────────
+// 세부 활동 항목
+// ─────────────────────────────────────────────
+model Activity {
+  id       String           @id @default(cuid())
+
+  category ActivityCategory // 활동 유형
+  name     String           // seed: "한국전력", "플라스틱 1", "플라스틱 2", "트럭"
+  scope    GhgScope         //
+
+  emissionFactors EmissionFactor[]
+  activityData    ActivityData[]
+
+  @@unique([category, name])
+  @@index([category])
+}
+
+// ─────────────────────────────────────────────
+// 배출계수 (Activity별 버전 이력)
+// ─────────────────────────────────────────────
+model EmissionFactor {
+  id         String   @id @default(cuid())
+
+  activityId String
+  activity   Activity @relation(fields: [activityId], references: [id])
+
+  factor        Float    // 배출계수 값
+  inputUnit     String   // 단위
+  outputUnit    String   @default("kgCO2e")
+
+  version       Int      @default(1)
+  effectiveFrom DateTime
+  effectiveTo   DateTime? // null = 현재 유효
+  isLatest      Boolean   @default(true)
+  changeNote    String?
+
+  activityData ActivityData[]
+
+  createdAt DateTime @default(now())
+
+  @@index([activityId, isLatest])
+  @@index([activityId, effectiveFrom])
+}
+
+// ─────────────────────────────────────────────
+// 활동 데이터 (원본 투입 + 계산 결과)
+// ─────────────────────────────────────────────
+model ActivityData {
+  id         String   @id @default(cuid())
+
+  date       DateTime
+
+  activityId String
+  activity   Activity @relation(fields: [activityId], references: [id])
+
+  // 쿼리 최적화용 비정규화 (Activity에서 파생되지만 JOIN 없이 집계하기 위해 저장)
+  category   ActivityCategory
+  scope      GhgScope
+
+  quantity       Float
+  activityUnitId String
+  activityUnit   ActivityUnit @relation(fields: [activityUnitId], references: [id])
+
+  // 계산 결과: quantity × emissionFactor.factor (kgCO2e)
+  emissionKgCo2e Float?
+
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  // 계산에 사용된 배출계수 버전 추적
+  emissionFactorId String?
+  emissionFactor   EmissionFactor? @relation(fields: [emissionFactorId], references: [id])
+
+  // Excel 업로드 배치 연결 (직접 입력 시 null)
+  uploadBatchId String?
+  uploadBatch   UploadBatch? @relation(fields: [uploadBatchId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId, date])
+  @@index([companyId, category])
+  @@index([companyId, scope])
+}
+
+// ─────────────────────────────────────────────
+// Excel 업로드 배치
+// ─────────────────────────────────────────────
+model UploadBatch {
+  id        String  @id @default(cuid())
+  filename  String
+  status    String  @default("pending") // pending | processing | completed | failed
+  rowCount  Int?
+  errorLog  String?
+
+  companyId  String
+  company    Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  activities ActivityData[]
+
+  createdAt DateTime @default(now())
+}

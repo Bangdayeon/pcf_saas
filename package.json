@@ -9,6 +9,9 @@
     "lint": "eslint .",
     "prepare": "husky install"
   },
+  "prisma": {
+    "seed": "ts-node -P prisma/tsconfig.json prisma/seed.ts"
+  },
   "lint-staged": {
     "*.{ts,tsx,js}": [
       "eslint --fix --max-warnings=0",
@@ -20,12 +23,14 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
+    "@prisma/client": "^7.8.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.14.0",
     "next": "16.2.4",
+    "prisma": "^7.8.0",
     "react": "19.2.4",
     "react-day-picker": "^9.14.0",
     "react-dom": "19.2.4",
