@@ -31,4 +31,8 @@
   --color-blue700: #0068b7;
   --color-blue800: #005293;
   --color-blue900: #003c6f;
+
+  --primary: var(--color-green500);
+  --background: var(--gray900);
+  --foreground: var(--color-gray50);
 }
