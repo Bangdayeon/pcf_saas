@@ -1,4 +1,4 @@
-import AddPage from '@/components/page/add/AddPage';
+import AddPage from '@/features/add/AddPage';
 
 export default function page() {
   return <AddPage />;
