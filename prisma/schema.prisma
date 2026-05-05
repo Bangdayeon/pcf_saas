@@ -25,7 +25,7 @@ enum GhgScope {
 model Company {
   id         String         @id @default(cuid())
   name       String
-  country    String?
+  country    Number?
 
   activities ActivityData[]
   batches    UploadBatch[]
