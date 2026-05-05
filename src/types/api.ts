@@ -39,6 +39,25 @@ export interface CreateActivityDataBody {
   activityUnitId: string;
 }
 
+// Company dropdown
+export interface CompanyOption {
+  id: string;
+  name: string;
+}
+
+// Activity dropdown
+export interface ActivityOption {
+  id: string;
+  name: string;
+  category: ActivityCategory;
+}
+
+// Unit dropdown
+export interface ActivityUnitOption {
+  id: string;
+  unit: string;
+}
+
 /* ================= Upload Excel ================= */
 // 업로드 생성, 조회, UI로 상태 표시
 export interface UploadBatch {
