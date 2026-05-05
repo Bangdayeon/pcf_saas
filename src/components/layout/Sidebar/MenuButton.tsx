@@ -1,8 +1,8 @@
 'use client';
 
-import { Button } from '@/components/ui/Button';
 import SVGIcon from '@/components/ui/SVGIcon';
 import { IconMapTypes } from '@/components/ui/SVGIcon/icons';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { usePathname, useRouter } from 'next/navigation';
 

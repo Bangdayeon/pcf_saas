@@ -14,9 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>
+      <body className="flex min-h-screen">
         <Sidebar />
-        <main className="min-h-screen flex-1 overflow-x-hidden">{children}</main>
+        <main className="flex-1 overflow-x-hidden px-10 py-8">{children}</main>
       </body>
     </html>
   );

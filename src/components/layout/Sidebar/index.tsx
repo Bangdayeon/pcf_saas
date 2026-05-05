@@ -2,12 +2,12 @@
 import Logo from '@/assets/images/logo.png';
 import SVGIcon from '@/components/ui/SVGIcon';
 import { cn } from '@/lib/utils';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
-import { Button } from '../../ui/Button';
+import { Button } from '../../ui/button';
 import MenuButton from './MenuButton';
 import { useSidebarStore } from './sidebarStore';
 
@@ -38,27 +38,12 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* 배경 (사이드바 열렸을 때만 표시) */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            key="backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-black/30"
-            // 배경 클릭 시 사이드바 닫기
-            onClick={() => setOpen(false)}
-          />
-        )}
-      </AnimatePresence>
-
       {/* 사이드바 */}
       <motion.nav
         ref={navRef}
         animate={{ width: isOpen ? 240 : 80 }}
         transition={{ type: 'spring', stiffness: 200, damping: 24 }}
-        className={`bg-green100 fixed top-0 left-0 z-50 flex h-screen flex-col gap-3 overflow-hidden p-5 shadow-md ${isOpen ? '' : 'items-center'}`}
+        className={`bg-green100 sticky top-0 flex h-screen shrink-0 flex-col gap-3 overflow-hidden p-5 shadow-md ${isOpen ? '' : 'items-center'}`}
       >
         {/* 토글 버튼 */}
         <Button onClick={toggle} variant="ghost" size="icon-lg" className="hover:bg-green200 p-1">
