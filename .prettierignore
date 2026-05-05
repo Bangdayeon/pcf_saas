@@ -16,3 +16,6 @@ yarn.lock
 # Git 관련
 .git
 .github
+
+.claude
+.vscode

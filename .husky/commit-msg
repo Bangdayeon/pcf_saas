@@ -1,1 +1,1 @@
-yarn commitlint --config commintlint.config.cjs --edit $1
+yarn commitlint --config commitlint.config.cjs --edit $1
