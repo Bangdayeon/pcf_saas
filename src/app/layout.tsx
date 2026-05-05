@@ -1,9 +1,7 @@
+import Sidebar from '@/components/layout/Sidebar';
 import { cn } from '@/lib/utils';
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
-import { Geist } from 'next/font/google';
-
-const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,8 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={cn('font-sans', geist.variable)}>
-      <body className="flex min-h-full flex-col">{children}</body>
+    <html lang="ko">
+      <body>
+        <Sidebar />
+        <main className="min-h-screen flex-1 overflow-x-hidden">{children}</main>
+      </body>
     </html>
   );
 }
