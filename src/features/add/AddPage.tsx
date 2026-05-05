@@ -18,6 +18,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import AddedItem from './AddedItem';
+import { useActivities } from './hooks/useActivities';
+import { useActivityUnits } from './hooks/useActivityUnits';
+import { useCompanies } from './hooks/useCompanies';
 
 const titleStyle = 'text-lg font-bold mb-4 mt-8 flex gap-2 items-center';
 const subTitleStyle = 'font-semibold mb-1';
@@ -25,6 +28,11 @@ const subTitleStyle = 'font-semibold mb-1';
 export default function AddPage() {
   const { register, handleSubmit, setValue, watch } = useForm();
   const [date, setDate] = useState<Date | undefined>();
+
+  // dropdown menu
+  const { data: companies } = useCompanies();
+  const { data: activities } = useActivities();
+  const { data: units } = useActivityUnits();
 
   const onSubmit = (data: any) => {
     console.log(data);
@@ -58,7 +66,9 @@ export default function AddPage() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
-                <DropdownMenuItem>하나루프(본사)</DropdownMenuItem>
+                {companies?.map(c => (
+                  <DropdownMenuItem key={c.id}>{c.name}</DropdownMenuItem>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -83,10 +93,9 @@ export default function AddPage() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
-                <DropdownMenuItem>전기</DropdownMenuItem>
-                <DropdownMenuItem>원소재(플라스틱1)</DropdownMenuItem>
-                <DropdownMenuItem>원소재(플라스틱2)</DropdownMenuItem>
-                <DropdownMenuItem>운송</DropdownMenuItem>
+                {activities?.map(a => (
+                  <DropdownMenuItem key={a.id}>{a.name}</DropdownMenuItem>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -103,6 +112,12 @@ export default function AddPage() {
                   <SVGIcon icon={'IC_Arrow_Drop_Down'} />
                 </Button>
               </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="start">
+                {units?.map(u => (
+                  <DropdownMenuItem key={u.id}>{u.unit}</DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
             </DropdownMenu>
           </div>
           <div>

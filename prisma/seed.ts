@@ -1,6 +1,10 @@
+import { PrismaPg } from '@prisma/adapter-pg';
 import { ActivityCategory, GhgScope, PrismaClient } from '@prisma/client';
+import 'dotenv/config';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
+});
 
 const ACTIVITY_UNITS: {
   category: ActivityCategory;
@@ -30,6 +34,18 @@ const ACTIVITIES: {
 ];
 
 async function main() {
+  await prisma.company.upsert({
+    where: { id: 'hana-loop' },
+    update: {},
+    create: {
+      id: 'hana-loop',
+      name: '하나루프(본사)',
+      country: 'KR',
+    },
+  });
+
+  console.log('Seed completed: Company');
+
   for (const data of ACTIVITY_UNITS) {
     await prisma.activityUnit.upsert({
       where: { category_unit: { category: data.category, unit: data.unit } },
