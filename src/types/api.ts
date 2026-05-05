@@ -1,77 +1,72 @@
-import type { ActivityCategory, GhgScope } from './enums';
-import type { ActivityData, ActivityDataDetail, UploadBatch } from './models';
+import type { ActivityCategory, GhgScope, UploadStatus } from './enums';
 
-// ====== 공통 ==============================
-export interface ApiSuccess<T> {
-  data: T;
+/* ================= 공통 ================= */
+
+export type ApiResponse<T> = { data: T } | { error: string };
+
+/* ================= ActivityData ================= */
+// 리스트 화면
+export interface ActivityDataItem {
+  id: string;
+  date: string;
+
+  activityId: string;
+  activity: string;
+
+  category: ActivityCategory;
+  scope: GhgScope;
+
+  quantity: number;
+  unit: string;
+
+  emissionKgCo2e: number | null;
 }
 
-export interface ApiError {
-  error: string;
-}
-
-export type ApiResponse<T> = ApiSuccess<T> | ApiError;
-
-// ====== ActivityData ======
-
-// GET /api/activity-data
-export interface GetActivityDataQuery {
-  companyId: string;
-  category?: ActivityCategory;
-  scope?: GhgScope;
-  startDate?: string; // ISO 8601
-  endDate?: string;
-  page?: number;
-  pageSize?: number;
-}
-
+// 리스트 조회
 export interface GetActivityDataResponse {
-  items: ActivityDataDetail[];
+  items: ActivityDataItem[];
   total: number;
   page: number;
   pageSize: number;
 }
 
-// POST /api/activity-data
+// 데이터 추가
 export interface CreateActivityDataBody {
   companyId: string;
-  date: string; // ISO 8601
+  date: string;
   activityId: string;
   quantity: number;
   activityUnitId: string;
 }
 
-export type CreateActivityDataResponse = ActivityData;
+/* ================= Upload Excel ================= */
+// 업로드 생성, 조회, UI로 상태 표시
+export interface UploadBatch {
+  id: string;
+  filename: string;
+  status: UploadStatus;
+  rowCount: number | null;
+  errorLog: string | null;
+}
 
-// ====== Upload ======
+/* ================= Summary (전체 대시보드) ================= */
 
-// POST /api/upload  (multipart/form-data)
-// FormData: { file: File, companyId: string }
-export type UploadResponse = UploadBatch;
-
-// GET /api/upload/:batchId
-export type GetUploadBatchResponse = UploadBatch;
-
-// ====== Summary (대시보드) ======
-
-// GET /api/summary
+// 요약 데이터 조회 조건(회사, 특정 연도)
 export interface GetSummaryQuery {
   companyId: string;
-  year?: number;
+  startDate?: string;
+  endDate?: string;
 }
 
-export interface SummaryByCategory {
-  category: ActivityCategory;
+// 카테고리or스코프별 그룹의 총 배출량
+export interface SummaryItem {
+  key: string; // category or scope
   emissionKgCo2e: number;
 }
 
-export interface SummaryByScope {
-  scope: GhgScope;
-  emissionKgCo2e: number;
-}
-
+// 대시보드 KPI 전체 응답구조
 export interface GetSummaryResponse {
   totalEmissionKgCo2e: number;
-  byCategory: SummaryByCategory[];
-  byScope: SummaryByScope[];
+  byCategory: SummaryItem[];
+  byScope: SummaryItem[];
 }
