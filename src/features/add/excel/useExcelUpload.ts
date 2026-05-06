@@ -22,7 +22,8 @@ function resolveRow(
   activities: ActivityOption[],
   allUnits: ActivityUnitOption[]
 ): Omit<PendingItem, '_id'> | null {
-  const matchedActivity = activities.find(a => a.name === row.activity);
+  // 설명 컬럼에 활동명이 들어오므로 description으로 조회
+  const matchedActivity = activities.find(a => a.name === row.description);
   if (!matchedActivity) return null;
 
   const matchedUnit = allUnits.find(u => u.unit === row.unit);
@@ -33,11 +34,10 @@ function resolveRow(
     companyName: company.name,
     date: row.date,
     activityId: matchedActivity.id,
-    activity: matchedActivity.name,
+    activity: row.activity, // 활동 유형 (전기/원소재/운송) — UI
     quantity: row.quantity,
     activityUnitId: matchedUnit.id,
     unit: matchedUnit.unit,
-    description: row.description,
   };
 }
 

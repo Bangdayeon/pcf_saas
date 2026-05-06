@@ -28,7 +28,10 @@ const STORAGE_KEY = 'pcf_pending_items';
 function loadFromStorage(): PendingItem[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+    const items: PendingItem[] = JSON.parse(raw);
+    // ID 필드 없는 구버전 데이터 제거
+    return items.filter(item => item.companyId && item.activityId && item.activityUnitId);
   } catch {
     return [];
   }
