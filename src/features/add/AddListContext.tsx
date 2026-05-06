@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 export interface PendingItem {
   _id: string;
@@ -31,7 +31,6 @@ function loadFromStorage(): PendingItem[] {
   }
 }
 
-// 중복 체크 키: 필수 5개 필드 조합
 function itemKey(item: Omit<PendingItem, '_id' | 'description'>) {
   return `${item.companyName}|${item.date}|${item.activity}|${item.quantity}|${item.unit}`;
 }
@@ -39,12 +38,19 @@ function itemKey(item: Omit<PendingItem, '_id' | 'description'>) {
 const AddListContext = createContext<AddListContextValue | null>(null);
 
 export function AddListProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<PendingItem[]>(() => {
-    if (typeof window === 'undefined') return [];
-    return loadFromStorage();
-  });
+  // 서버/클라이언트 모두 []로 시작 → hydration mismatch 방지
+  // 마운트 후 useEffect에서 localStorage와 동기화
+  const [items, setItems] = useState<PendingItem[]>([]);
   // ref는 항상 최신 목록을 동기적으로 참조 — 배치 추가(Excel) 시 stale closure 방지
-  const itemsRef = useRef(items);
+  const itemsRef = useRef<PendingItem[]>([]);
+
+  useEffect(() => {
+    const loaded = loadFromStorage();
+    itemsRef.current = loaded;
+    // 외부 시스템(localStorage) 읽기 후 단 1회 동기화. cascade 없음
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setItems(loaded);
+  }, []);
 
   const addItem = useCallback((item: Omit<PendingItem, '_id'>): boolean => {
     if (itemsRef.current.some(e => itemKey(e) === itemKey(item))) return false;
