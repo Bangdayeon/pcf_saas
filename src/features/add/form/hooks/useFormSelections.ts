@@ -3,8 +3,8 @@
 import { ActivityOption, ActivityUnitOption, CompanyOption } from '@/types';
 import { useState } from 'react';
 
-import { useActivities } from './useActivities';
-import { useActivityUnits } from './useActivityUnits';
+import { useActivities } from '../../hooks/useActivities';
+import { useActivityUnits } from '../../hooks/useActivityUnits';
 import { useCompanies } from '../../hooks/useCompanies';
 
 export function useFormSelections() {

@@ -1,10 +1,10 @@
 import { prisma } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
 
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const category = searchParams.get('category');
+export async function GET(req: NextRequest) {
+  const category = req.nextUrl.searchParams.get('category');
 
-  const datas = await prisma.activityUnit.findMany({
+  const data = await prisma.activityUnit.findMany({
     where: category ? { category: category as any } : undefined,
     select: {
       id: true,
@@ -13,5 +13,5 @@ export async function GET(req: Request) {
     },
   });
 
-  return Response.json(datas);
+  return Response.json(data);
 }
