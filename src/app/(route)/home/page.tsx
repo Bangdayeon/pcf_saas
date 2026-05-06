@@ -1,3 +1,5 @@
+import HomePage from '@/features/home/HomePage';
+
 export default function page() {
-  return <div>홈</div>;
+  return <HomePage />;
 }
