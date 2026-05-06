@@ -1,4 +1,5 @@
 'use client';
+
 import { fetcher } from '@/lib/fetcher';
 import { CompanyOption } from '@/types';
 import { useQuery } from '@tanstack/react-query';

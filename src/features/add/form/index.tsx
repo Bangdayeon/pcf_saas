@@ -11,11 +11,11 @@ import { Input } from '@/components/ui/input';
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
 import { useRef } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 
-import { PendingItem } from './hooks/useAddList';
+import { useAddListContext } from '../AddListContext';
+import { titleStyle } from '../styles.style';
 import { useFormSelections } from './hooks/useFormSelections';
-import { titleStyle } from './styles.style';
 
 const subTitleStyle = 'font-semibold mb-1';
 
@@ -24,17 +24,12 @@ interface FormValues {
   description?: string;
 }
 
-export default function AddDataSection({
-  onAdd,
-}: {
-  onAdd: (data: Omit<PendingItem, '_id'>) => void;
-}) {
-  const { register, handleSubmit, reset, watch } = useForm<FormValues>();
-  const quantity = watch('quantity');
+export default function AddDataSection() {
+  const { addItem } = useAddListContext();
+  const { register, handleSubmit, reset, control } = useForm<FormValues>();
+  const quantity = useWatch({ control, name: 'quantity' });
 
-  const formSelections = useFormSelections();
-  const { data, selections, actions } = formSelections;
-
+  const { data, selections, actions } = useFormSelections();
   const { companies, activities, units } = data;
   const {
     selectedCompany,
@@ -46,34 +41,34 @@ export default function AddDataSection({
     selectedUnit,
     setSelectedUnit,
   } = selections;
-
   const { resetSelections } = actions;
 
-  // 캘린더 popover 닫기용 ref
   const calendarCloseRef = useRef<HTMLButtonElement>(null);
 
-  const onAddData = (data: FormValues) => {
-    if (!selectedCompany || !date || !selectedActivity || !data.quantity || !selectedUnit) return;
+  const onSubmit = (formData: FormValues) => {
+    if (!selectedCompany || !date || !selectedActivity || !formData.quantity || !selectedUnit)
+      return;
 
-    onAdd({
+    addItem({
       companyName: selectedCompany.name,
       date: format(date, 'yyyy-MM-dd'),
       activity: selectedActivity.name,
-      quantity: Number(data.quantity),
+      quantity: Number(formData.quantity),
       unit: selectedUnit.unit,
-      description: data.description || undefined,
+      description: formData.description || undefined,
     });
 
     reset();
     resetSelections();
   };
+
   return (
     <section>
       <div className={titleStyle}>
         <SVGIcon icon="IC_Edit" />
         <p>데이터 직접 입력</p>
       </div>
-      <form onSubmit={handleSubmit(onAddData)} className="ml-2 flex flex-col gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="ml-2 flex flex-col gap-4">
         <div className="flex items-center gap-3">
           <p className={subTitleStyle}>기업</p>
           <DropdownMenu>

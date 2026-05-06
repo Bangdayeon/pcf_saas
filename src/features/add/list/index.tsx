@@ -4,12 +4,12 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { useState } from 'react';
 
+import { useAddListContext } from '../AddListContext';
+import { titleStyle } from '../styles.style';
 import Pagination from './Pagination';
-import { useAddList } from './hooks/useAddList';
-import { titleStyle } from './styles.style';
 
 export default function AddedListSection() {
-  const { items, removeItems } = useAddList();
+  const { items, removeItems } = useAddListContext();
   const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 10;
@@ -54,7 +54,11 @@ export default function AddedListSection() {
         </Button>
       </div>
       <div className="mx-2 flex items-center">
-        <Checkbox className="mr-3" checked={allPageChecked} onCheckedChange={checked => togglePageAll(checked as boolean)} />
+        <Checkbox
+          className="mr-3"
+          checked={allPageChecked}
+          onCheckedChange={checked => togglePageAll(checked as boolean)}
+        />
         <p className="flex-1">기업명</p>
         <p className="flex-1">날짜</p>
         <p className="flex-1">활동 유형</p>
