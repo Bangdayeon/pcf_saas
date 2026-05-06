@@ -50,10 +50,13 @@ export default function AddDataSection() {
       return;
 
     addItem({
+      companyId: selectedCompany.id,
       companyName: selectedCompany.name,
       date: format(date, 'yyyy-MM-dd'),
+      activityId: selectedActivity.id,
       activity: selectedActivity.name,
       quantity: Number(formData.quantity),
+      activityUnitId: selectedUnit.id,
       unit: selectedUnit.unit,
       description: formData.description || undefined,
     });

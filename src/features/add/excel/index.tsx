@@ -11,8 +11,8 @@ import {
 import { useState } from 'react';
 
 import { useAddListContext } from '../AddListContext';
-import { titleStyle } from '../styles.style';
 import { useCompanies } from '../hooks/useCompanies';
+import { titleStyle } from '../styles.style';
 import { UploadStatusType, useExcelUpload } from './useExcelUpload';
 
 const STATUS_COLOR: Record<UploadStatusType, string> = {
@@ -28,9 +28,6 @@ export default function ExcelSection() {
   const [selectedCompany, setSelectedCompany] = useState<{ id: string; name: string } | null>(null);
   const effectiveCompany = selectedCompany ?? companies?.[0] ?? null;
 
-  const onAddWithCompany = (item: Parameters<typeof addItem>[0]): boolean =>
-    addItem({ ...item, companyName: effectiveCompany?.name ?? '' });
-
   const {
     fileInputRef,
     status,
@@ -40,7 +37,7 @@ export default function ExcelSection() {
     handleDrop,
     handleDragOver,
     handleDragLeave,
-  } = useExcelUpload(onAddWithCompany);
+  } = useExcelUpload(effectiveCompany, addItem);
 
   return (
     <section>

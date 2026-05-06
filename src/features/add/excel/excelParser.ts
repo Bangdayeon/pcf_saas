@@ -1,24 +1,28 @@
-import { PendingItem } from '../AddListContext';
-
+// 엑셀 열 이름 상수 — 실제 파일의 헤더(1행)와 정확히 일치해야 한다
 const COL = {
   DATE: '일자(원본)',
-  ACTIVITY: '활동 유형', // 공백 포함
+  ACTIVITY: '활동 유형',
   QUANTITY: '량',
   UNIT: '단위',
-  DESCRIPTION: '설명', // 선택 열
+  DESCRIPTION: '설명',
 } as const;
 
-// 파싱 결과 타입
+// 파서가 반환하는 행 타입 — 이름만 포함, ID는 useExcelUpload에서 리졸브
+export interface ParsedRow {
+  date: string;
+  activity: string;
+  quantity: number;
+  unit: string;
+  description?: string;
+}
+
 interface ParseResult {
-  succeeded: Omit<PendingItem, '_id'>[];
-  // 실패한 행 번호 목록
+  succeeded: ParsedRow[];
   failedRows: number[];
 }
 
-// 날짜 정규화
 export function normalizeDate(value: unknown): string {
   if (value instanceof Date) {
-    // Date 객체 → 'yyyy-MM-dd' 문자열
     const y = value.getFullYear();
     const m = String(value.getMonth() + 1).padStart(2, '0');
     const d = String(value.getDate()).padStart(2, '0');
@@ -27,9 +31,8 @@ export function normalizeDate(value: unknown): string {
   return String(value ?? '').trim();
 }
 
-// 시트 JSON → PendingItem 변환 + 유효성 검사
 export function parseRows(rows: unknown[]): ParseResult {
-  const succeeded: Omit<PendingItem, '_id'>[] = [];
+  const succeeded: ParsedRow[] = [];
   const failedRows: number[] = [];
 
   rows.forEach((row: any, index) => {
@@ -42,11 +45,11 @@ export function parseRows(rows: unknown[]): ParseResult {
     const isInvalid = !date || !activity || !unit || !Number.isFinite(quantity) || quantity <= 0;
 
     if (isInvalid) {
-      // 엑셀 행 번호 = index(0-based) + 1(헤더) + 1(0→1 보정) = index + 2
       failedRows.push(index + 2);
       return;
     }
-    succeeded.push({ companyName: '', date, activity, quantity, unit, description });
+
+    succeeded.push({ date, activity, quantity, unit, description });
   });
 
   return { succeeded, failedRows };

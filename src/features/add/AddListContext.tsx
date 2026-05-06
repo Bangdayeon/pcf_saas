@@ -4,10 +4,13 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 
 export interface PendingItem {
   _id: string;
+  companyId: string;
   companyName: string;
   date: string;
+  activityId: string;
   activity: string;
   quantity: number;
+  activityUnitId: string;
   unit: string;
   description?: string;
 }
