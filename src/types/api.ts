@@ -56,6 +56,7 @@ export interface ActivityOption {
 export interface ActivityUnitOption {
   id: string;
   unit: string;
+  isDefault: boolean;
 }
 
 /* ================= Upload Excel ================= */

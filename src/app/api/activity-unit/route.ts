@@ -9,6 +9,7 @@ export async function GET(req: Request) {
     select: {
       id: true,
       unit: true,
+      isDefault: true,
     },
   });
 
