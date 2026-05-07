@@ -1,16 +1,26 @@
 'use client';
 
+import Spinner from '@/components/ui/Loading';
+
 import { useTotalEmission } from './useTotalEmission';
 
-export default function TotalEmission({ year }: { year: number }) {
-  const { data } = useTotalEmission(year);
+export default function TotalEmission({ year }: { year: number | null }) {
+  const { data, isPending, isError } = useTotalEmission(year);
 
   return (
-    <section className="flex flex-col border">
-      <p>총 배출량</p>
-      <div className="flex gap-5">
-        <span>{data?.tCo2e.toLocaleString() ?? '-'}</span>
-        <span>tCO2e</span>
+    <section className="flex flex-col gap-3 rounded-2xl border px-5 py-4 shadow-md">
+      <p className="text-2xl font-bold">총 배출량</p>
+      <div className="flex items-center gap-4">
+        {isError ? (
+          <span className="text-sm text-red-500">데이터를 불러오지 못했습니다.</span>
+        ) : (
+          <>
+            <span className="text-4xl font-bold">
+              {isPending ? <Spinner /> : data?.tCo2e.toLocaleString()}
+            </span>
+            <span className="text-green700 font-semibold">tCO2e</span>
+          </>
+        )}
       </div>
     </section>
   );
