@@ -1,4 +1,10 @@
 # pcf_saas
+
+프로젝트 상세 설계 및 기능 정의 문서입니다.
+
+- [Notion 문서 보기](https://aback-shirt-867.notion.site/pcf-saas-357add99c0428010bb3ac952b9531c46?utm_source=chatgpt.com)
+
+
 ## 🏃 실행 방법
 1. 저장소 클론
     
@@ -69,7 +75,7 @@
 **AI Tool**
 - claude code (prisma 설계 및 chart, xlsx 구현에 주로 활용)
 
-## 폴더 구조
+## 📂 폴더 구조
 ```
 src/
 ├─ app/
@@ -96,3 +102,12 @@ src/
 │
 └─ types/
 ```
+
+## 🎨 UI 둘러보기
+<p align="center">
+  <img width="32%" src="https://github.com/user-attachments/assets/f4c700ef-69e9-459d-9696-3c366a7acfa1" />
+  <img width="32%" src="https://github.com/user-attachments/assets/16dac840-c889-4f2b-89a8-792ba65c6f75" />
+  <img width="32%" src="https://github.com/user-attachments/assets/d33aabf4-67ea-4ea7-a640-af76a291312b" />
+</p>
+
+
