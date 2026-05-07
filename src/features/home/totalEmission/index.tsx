@@ -1,6 +1,6 @@
 'use client';
 
-import Spinner from '@/components/ui/Loading';
+import Loading from '@/components/ui/Loading';
 
 import { useTotalEmission } from './useTotalEmission';
 
@@ -16,7 +16,7 @@ export default function TotalEmission({ year }: { year: number | null }) {
         ) : (
           <>
             <span className="text-4xl font-bold">
-              {isPending ? <Spinner /> : data?.tCo2e.toLocaleString()}
+              {isPending ? <Loading /> : data?.tCo2e.toLocaleString()}
             </span>
             <span className="text-green700 font-semibold">tCO2e</span>
           </>

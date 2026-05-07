@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
 
+import MonthlyEmission from './monthlyEmission';
 import TotalEmission from './totalEmission';
 import { useYears } from './totalEmission/useYears';
 
@@ -39,7 +40,11 @@ export default function HomePage() {
         </DropdownMenu>
       </div>
 
-      <TotalEmission year={effectiveYear} />
+      <div className="flex flex-col gap-10">
+        <TotalEmission year={effectiveYear} />
+
+        <MonthlyEmission year={effectiveYear} />
+      </div>
     </div>
   );
 }

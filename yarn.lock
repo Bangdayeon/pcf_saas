@@ -2961,7 +2961,7 @@ chalk@^5.3.0:
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-5.6.2.tgz#b1238b6e23ea337af71c7f8a295db5af0c158aea"
   integrity sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==
 
-chart.js@4.5.1:
+chart.js@4.5.1, chart.js@^4.5.1:
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-4.5.1.tgz#19dd1a9a386a3f6397691672231cb5fc9c052c35"
   integrity sha512-GIjfiT9dbmHRiYi6Nl2yFCq7kkwdkp1W/lp2J99rX0yo9tgJGn3lKQATztIjb5tVtevcBtIdICNWqlq5+E8/Pw==
@@ -6010,6 +6010,11 @@ rc9@^3.0.1:
   dependencies:
     defu "^6.1.6"
     destr "^2.0.5"
+
+react-chartjs-2@^5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/react-chartjs-2/-/react-chartjs-2-5.3.1.tgz#2b29995ce8b07f5c95c6ea3696838569e88453aa"
+  integrity sha512-h5IPXKg9EXpjoBzUfyWJvllMjG2mQ4EiuHQFhms/AjUm0XSZHhyRy2xVmLXHKrtcdrPO4mnGqRtYoD0vp95A0A==
 
 react-day-picker@^9.14.0:
   version "9.14.0"

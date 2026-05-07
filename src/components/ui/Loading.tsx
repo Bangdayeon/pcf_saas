@@ -8,7 +8,7 @@ const strokeWidth = 2.1;
 const bg_stroke_color = '#C7C8CD'; // gray200
 const child_stroke_color = '#7A7C86'; // gray500
 
-const Spinner = ({ size = 'md', speed = 1, ariaLabel = '로딩중' }: SpinnerProps) => {
+const Loading = ({ size = 'md', speed = 1, ariaLabel = '로딩중' }: SpinnerProps) => {
   const sizeMap = {
     sm: 16,
     md: 18,
@@ -58,4 +58,4 @@ const Spinner = ({ size = 'md', speed = 1, ariaLabel = '로딩중' }: SpinnerPro
   );
 };
 
-export default Spinner;
+export default Loading;
