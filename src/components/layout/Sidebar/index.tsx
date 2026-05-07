@@ -49,7 +49,7 @@ export default function Sidebar() {
         <Button onClick={toggle} variant="ghost" size="icon-lg" className="hover:bg-green200 p-1">
           <Image src={Logo} alt="사이드바 버튼" width={40} height={40} />
         </Button>
-        <MenuButton href="/home" label="대시보드" icon="IC_Home" isOpen={isOpen} />
+        <MenuButton href="/" label="대시보드" icon="IC_Home" isOpen={isOpen} />
         <MenuButton href="/add" label="데이터 추가" icon="IC_Add" isOpen={isOpen} />
       </motion.nav>
     </>
