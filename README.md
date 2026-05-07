@@ -41,6 +41,7 @@
     yarn start
     ```
 ## ⚙️ 기술 스택
+```
 **Core**
 - Next.js 14 (App Router)
 - React 18
@@ -74,6 +75,7 @@
 
 **AI Tool**
 - claude code (prisma 설계 및 chart, xlsx 구현에 주로 활용)
+```
 
 ## 📂 폴더 구조
 ```
