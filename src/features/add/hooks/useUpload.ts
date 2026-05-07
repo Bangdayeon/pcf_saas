@@ -1,7 +1,7 @@
 'use client';
 
 import { poster } from '@/lib/fetcher';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { PendingItem, useAddListContext } from '../AddListContext';
 
@@ -27,10 +27,19 @@ async function uploadItems(items: PendingItem[]) {
 
 export function useUpload() {
   const { items, removeItems } = useAddListContext();
+  const queryClient = useQueryClient();
 
   const { mutate, isPending, data } = useMutation({
     mutationFn: () => uploadItems(items),
-    onSuccess: ({ succeededIds }) => removeItems(succeededIds),
+    onSuccess: ({ succeededIds }) => {
+      removeItems(succeededIds);
+      queryClient.invalidateQueries({ queryKey: ['totalEmission'] });
+      queryClient.invalidateQueries({ queryKey: ['monthlyEmission'] });
+      queryClient.invalidateQueries({ queryKey: ['sourceRatio'] });
+      queryClient.invalidateQueries({ queryKey: ['scopeRatio'] });
+      queryClient.invalidateQueries({ queryKey: ['scopeMonthly'] });
+      queryClient.invalidateQueries({ queryKey: ['years'] });
+    },
   });
 
   return {
