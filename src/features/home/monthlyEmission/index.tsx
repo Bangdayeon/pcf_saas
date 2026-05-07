@@ -55,7 +55,7 @@ export default function MonthlyEmission({ year }: { year: number | null }) {
   const { data, isPending, isError } = useMonthlyEmission(year);
 
   return (
-    <section className="flex flex-col gap-3 rounded-2xl border px-5 py-4 shadow-md">
+    <section className="flex flex-col gap-3 rounded-2xl border px-5 py-4 shadow-md md:flex-1">
       <div className="flex items-center gap-2">
         <p className="text-lg font-bold">월 별 배출량 (tCO2e)</p>
         <TooltipProvider>

@@ -28,8 +28,8 @@ const ACTIVITIES: {
   inputUnit: string;
 }[] = [
   { category: 'ELECTRICITY', name: '한국전력', scope: 'SCOPE_2', factor: 0.456, inputUnit: 'kWh' },
-  { category: 'MATERIAL', name: '플라스틱 1', scope: 'SCOPE_3', factor: 2.3, inputUnit: 'kg' },
-  { category: 'MATERIAL', name: '플라스틱 2', scope: 'SCOPE_3', factor: 3.2, inputUnit: 'kg' },
+  { category: 'MATERIAL', name: '플라스틱 1', scope: 'SCOPE_1', factor: 2.3, inputUnit: 'kg' },
+  { category: 'MATERIAL', name: '플라스틱 2', scope: 'SCOPE_1', factor: 3.2, inputUnit: 'kg' },
   { category: 'TRANSPORT', name: '트럭', scope: 'SCOPE_3', factor: 3.5, inputUnit: 'ton-km' },
 ];
 
