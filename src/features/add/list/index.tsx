@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { useAddListContext } from '../AddListContext';
 import { titleStyle } from '../styles.style';
-import Pagination from './Pagination';
+import Pagination from '@/components/ui/Pagination';
 
 export default function AddedListSection() {
   const { items, removeItems } = useAddListContext();

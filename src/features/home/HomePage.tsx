@@ -11,6 +11,7 @@ import {
 import { useState } from 'react';
 
 import MonthlyEmission from './monthlyEmission';
+import SourceRatio from './sourceRatio';
 import TotalEmission from './totalEmission';
 import { useYears } from './totalEmission/useYears';
 
@@ -43,7 +44,10 @@ export default function HomePage() {
       <div className="flex flex-col gap-10">
         <TotalEmission year={effectiveYear} />
 
-        <MonthlyEmission year={effectiveYear} />
+        <div className="flex flex-col gap-5 md:flex-row">
+          <MonthlyEmission year={effectiveYear} />
+        </div>
+        <SourceRatio year={effectiveYear} />
       </div>
     </div>
   );
