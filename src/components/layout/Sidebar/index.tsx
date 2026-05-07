@@ -1,20 +1,16 @@
 'use client';
 import Logo from '@/assets/images/logo.png';
-import SVGIcon from '@/components/ui/SVGIcon';
-import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 import { Button } from '../../ui/button';
 import MenuButton from './MenuButton';
+import { MENU_ITEMS } from './menu';
 import { useSidebarStore } from './sidebarStore';
 
 export default function Sidebar() {
-  const router = useRouter();
-  const pathName = usePathname();
-
   const { isOpen, toggle, setOpen } = useSidebarStore();
   const navRef = useRef<HTMLElement>(null);
 
@@ -30,12 +26,6 @@ export default function Sidebar() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [setOpen]);
 
-  // 페이지 이동 후 닫음
-  const handleNavigate = (path: string) => {
-    router.push(path);
-    setOpen(false);
-  };
-
   return (
     <>
       {/* 사이드바 */}
@@ -49,8 +39,15 @@ export default function Sidebar() {
         <Button onClick={toggle} variant="ghost" size="icon-lg" className="hover:bg-green200 p-1">
           <Image src={Logo} alt="사이드바 버튼" width={40} height={40} />
         </Button>
-        <MenuButton href="/" label="대시보드" icon="IC_Home" isOpen={isOpen} />
-        <MenuButton href="/add" label="데이터 추가" icon="IC_Add" isOpen={isOpen} />
+        {MENU_ITEMS.map(item => (
+          <MenuButton
+            key={item.href}
+            href={item.href}
+            label={item.label}
+            icon={item.icon}
+            isOpen={isOpen}
+          />
+        ))}
       </motion.nav>
     </>
   );
