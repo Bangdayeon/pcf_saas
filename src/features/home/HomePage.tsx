@@ -17,7 +17,7 @@ import TotalEmission from './totalEmission';
 import { useYears } from './totalEmission/useYears';
 
 export default function HomePage() {
-  const { data: yearsData } = useYears();
+  const { data: yearsData, isPending: yearsPending } = useYears();
   const years = yearsData?.years ?? [];
 
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
@@ -27,19 +27,21 @@ export default function HomePage() {
     <div className="text-gray900 flex flex-col">
       <div className="mb-6 flex items-center gap-4">
         <h1 className="text-2xl font-bold">메인 대시보드</h1>
-        <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="outline" />}>
-            <p>{effectiveYear ?? '연도 선택'}</p>
-            <SVGIcon icon="IC_Arrow_Drop_Down" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            {years.map(y => (
-              <DropdownMenuItem key={y} onClick={() => setSelectedYear(y)}>
-                {y}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {!yearsPending && years.length > 0 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger render={<Button variant="outline" />}>
+              <p>{effectiveYear}</p>
+              <SVGIcon icon="IC_Arrow_Drop_Down" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {years.map(y => (
+                <DropdownMenuItem key={y} onClick={() => setSelectedYear(y)}>
+                  {y}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
 
       <div className="flex flex-col gap-10">

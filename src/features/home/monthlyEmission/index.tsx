@@ -69,7 +69,9 @@ export default function MonthlyEmission({ year }: { year: number | null }) {
           </Tooltip>
         </TooltipProvider>
       </div>
-      {isError ? (
+      {year === null ? (
+        <p className="text-muted-foreground text-sm">데이터가 없습니다.</p>
+      ) : isError ? (
         <p className="text-sm text-red-500">데이터를 불러오지 못했습니다.</p>
       ) : isPending ? (
         <Loading />

@@ -75,7 +75,9 @@ export default function SourceRatio({ year }: { year: number | null }) {
   return (
     <section className="flex flex-col gap-4 rounded-2xl border px-5 py-4 shadow-md">
       <p className="text-lg font-bold">활동별 배출량 (tCO2e)</p>
-      {isError ? (
+      {year === null ? (
+        <p className="text-muted-foreground text-sm">데이터가 없습니다.</p>
+      ) : isError ? (
         <p className="text-sm text-red-500">데이터를 불러오지 못했습니다.</p>
       ) : isPending ? (
         <Loading />
